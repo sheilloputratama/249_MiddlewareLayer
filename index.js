@@ -14,3 +14,5 @@ const poll = new pool({
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT
 });
+
+app.use(express.json());
