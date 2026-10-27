@@ -132,3 +132,16 @@ async (req, res) => {
     return successResponse(res, 'Data berhasil diperbarui', result.rows[0])
 }
 
+app.delete('/biodata/:id', validateParams(idSchema), async (req, res) => {
+    const {id} = req.params
+    const result = await poll.query(
+        'DELETE FROM biodata WHERE id = $1 RETURNING *',
+        [id]
+    )
+    if (result.rowCount === 0) {
+        return errorResponse(res, 'Data tidak ditemukan', 404)
+    }
+    return successResponse(res, 'Data berhasil dihapus', result.rows[0])
+})
+
+/
