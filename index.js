@@ -5,3 +5,4 @@ import joi from "joi";
 
 const app = express();
 const port = process.env.PORT
+const {pool} = PG;
