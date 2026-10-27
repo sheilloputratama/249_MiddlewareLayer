@@ -17,3 +17,45 @@ const poll = new pool({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Middleware Logging
+app.use((req, res, next) => {
+    const start = Date.now();
+
+    res.on("finish", () => {
+        const duration = Date.now() - start;
+        console.log({
+            method: req.method,
+            url: req.originalUrl,
+            statusCode: res.statusCode,
+            duration: `${duration}ms`
+        });
+    });
+    next();
+});
+
+// Response Envelope
+function responseEnvelope(res, data, message, status = 200) {
+    return res.status(status).json({
+        success: true, message, data, error: null,
+    })
+}
+
+function errorResponseEnvelope(res, status, message, details = null) {
+    return res.status(status).json({
+        success: false, message, data: null, error: details,
+    })
+}
+
+//joi validation schema
+const biodataSchema = joi.object({
+    id: joi.number().integer().required(),
+    nama: joi.string().trim().min(2).max(100).required(),
+    nim: joi.string().trim().min(10).max(20).required(),
+    kelas: joi.string().trim().min(1).max(20).required(),
+})
+
+const idSchema = joi.object({
+    id: joi.number().integer().positive().required(),
+})
+
