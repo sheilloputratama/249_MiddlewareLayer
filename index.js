@@ -8,3 +8,4 @@ const port = process.env.PORT
 const {pool} = PG;
 
 const poll = new pool({
+    user: process.env.DB_USER,
