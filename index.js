@@ -100,3 +100,8 @@ function validate(schema) {
     }
 }
 
+app.get('/', async (req, res) => {
+    const result = await poll.query('SELECT * FROM biodata ORDER BY id')
+    return successResponse(res, 'Data berhasil diambil', result.rows)
+})
+
